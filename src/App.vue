@@ -1,28 +1,38 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" style="height: 100%;">
+    <a-row type="flex" style="height: 100%; overflow-y: hidden">
+      <a-col :span="6">
+        <Sidebar :blob="blob"
+                 @choose-category="chosenCategory = $event"
+                 @choose-status="chosenStatus = $event"
+        ></Sidebar>
+      </a-col>
+      <a-col :span="18">
+        <Map :blob="blob"
+             :chosenCategory="chosenCategory"
+             :chosenStatus="chosenStatus"
+        ></Map>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Sidebar from './components/Sidebar';
+import Map from './components/Map';
+import testBlob from './data/testBlob.json';
 
 export default {
-  name: 'App',
+  data () {
+    return {
+      blob: testBlob,
+      chosenCategory: '',
+      chosenStatus: ''
+    }
+  },
   components: {
-    HelloWorld
+    Sidebar,
+    Map
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
