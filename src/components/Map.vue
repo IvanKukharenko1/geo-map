@@ -3,17 +3,26 @@
             :mapStyle="mapStyle"
             @load="onMapLoaded"
     >
-        <MglGeojsonLayer :sourceId="geoJson.data.id"
-                         layerId="layerId"
-                         :source="geoJson"
-                         :layer="geoJsonLayer"
-        />
+        <MglMarker v-for="(marker, index) in geoJson.features"
+                   :key="index"
+                   :coordinates="marker.geometry.coordinates"
+                   color="blue"
+        >
+            <MglPopup :coordinates="marker.geometry.coordinates"
+                      anchor="top"
+                      :showed="marker.showed"
+            >
+                <a-card :title="marker.properties.project['Title']">
+                    <p>{{ marker.properties.project['Description'] }}</p>
+                </a-card>
+            </MglPopup>
+        </MglMarker>
     </MglMap>
 </template>
 
 <script>
     import Mapbox from "mapbox-gl";
-    import { MglMap, MglGeojsonLayer } from "vue-mapbox";
+    import { MglMap, MglMarker, MglPopup } from "vue-mapbox";
     import mapConfig from '../config'
 
     export default {
@@ -23,16 +32,16 @@
             chosenStatus: String
         },
 
+        components: {
+            MglMap,
+            MglMarker,
+            MglPopup
+        },
+
         data() {
             return {
                 accessToken: mapConfig.MAPBOX_GL_ACCESS_TOKEN,
                 mapStyle: mapConfig.MAPBOX_GL_STYLE,
-                geoJsonLayer: {
-                    type: "circle",
-                    paint: {
-                        "circle-color": "red"
-                    }
-                }
             };
         },
 
@@ -46,13 +55,13 @@
 
                 await asyncActions.flyTo({
                     center: this.center,
-                    zoom: 13,
-                    speed: 2
+                    zoom: mapConfig.ZOOM,
+                    speed: mapConfig.SPEED
                 })
             },
 
             filterFeatures () {
-                let res = this.filterByCondition('Category', this.blob.features)
+                let res = this.filterByCondition('Category', this.blob.features.map( item => ({ ...item, showed: false}) ))
                 return this.filterByCondition('Status', res);
             },
 
@@ -60,7 +69,7 @@
                 return this[`chosen${condition}`] === '' ? prev : prev.filter( item => {
                     return item.properties.project[condition] === this[`chosen${condition}`];
                 } );
-            }
+            },
         },
 
         computed: {
@@ -77,22 +86,11 @@
                 return coordinates;
             },
             geoJson () {
-                const json = {
-                    type: 'geojson',
-                    data: {
-                        features: this.filterFeatures(),
-                        analytics: this.blob.analytics,
-                        type: 'FeatureCollection'
-                    }
+                return {
+                    features: this.filterFeatures(),
+                    analytics: this.blob.analytics,
                 }
-                json.data.id = 'source';
-                return json;
             }
-        },
-
-        components: {
-            MglMap,
-            MglGeojsonLayer
         }
     };
 </script>

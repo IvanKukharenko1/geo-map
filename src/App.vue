@@ -1,6 +1,6 @@
 <template>
-  <div id="app" style="height: 100%;">
-    <a-row type="flex" style="height: 100%; overflow-y: hidden">
+  <div id="app">
+    <a-row type="flex">
       <a-col :span="6">
         <Sidebar :blob="blob"
                  @choose-category="chosenCategory = $event"

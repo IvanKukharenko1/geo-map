@@ -1,0 +1,16 @@
+.mapboxgl-popup-content {
+    padding: 15px;
+}
+
+.sidebar-filters > .a-menu {
+    height: 100%;
+}
+
+#app {
+    height: 100%;
+}
+
+#app > .ant-row-flex {
+    height: 100%;
+    overflow-y: hidden;
+}

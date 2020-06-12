@@ -1,7 +1,6 @@
 <template>
-    <div>
+    <div class="sidebar-filters">
         <a-menu mode="inline"
-                style="height: 100%"
                 v-model="selectedCategory"
         >
             <a-sub-menu key="category">
@@ -16,7 +15,6 @@
         </a-menu>
 
         <a-menu mode="inline"
-                style="height: 100%"
                 v-model="selectedStatus"
         >
             <a-sub-menu key="status">

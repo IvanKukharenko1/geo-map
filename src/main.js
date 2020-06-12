@@ -3,6 +3,7 @@ import Antd from 'ant-design-vue';
 import App from './App.vue'
 import VueMapbox from "vue-mapbox";
 import Mapbox from "mapbox-gl";
+import './assets/styles.css';
 
 Vue.use(VueMapbox, {mapboxgl: Mapbox});
 
