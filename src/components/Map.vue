@@ -6,7 +6,7 @@
         <MglMarker v-for="(marker, index) in geoJson.features"
                    :key="index"
                    :coordinates="marker.geometry.coordinates"
-                   color="blue"
+                   :color="marker.properties.color"
         >
             <MglPopup :coordinates="marker.geometry.coordinates"
                       anchor="top"
